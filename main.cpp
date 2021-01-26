@@ -60,13 +60,13 @@ int estoken(char x[]);
 bool finarch = false;
 FILE *Fd;
 
-char token[21][8] = {"x", ";", ",", "*", "Id", "[", "]", "Num", "char", "int", "float",
-    "puts", "(", ")", "Cte.Lit", "{", "}", "=","+","-","/"};
+char token[22][8] = {"x", ";", ",", "*", "Id", "[", "]", "Num", "char", "int", "float",
+    "puts", "(", ")", "Cte.Lit", "{", "}", "=","+","-","/", "Real"};
 
 char varsint[15][3]={"x", "D", "L", "L'", "I", "I'", "A", "A'", "K",
     "T", "F", "E", "P"};
                                                    // e -> cadena vacia
-int tablaM[43][8]= {{1, 4, 1, 12, 3, -1, 999, 999}, //id D->PL';
+int tablaM[44][8]= {{1, 4, 1, 12, 3, -1, 999, 999}, //id D->PL';
                     {1, 7, 1, 5, 3, -1, 999, 999}, //num D->I'L';
                     {1, 8, 1, 9, 2, -1, 999, 999}, //char D->TL;
                     {1, 9, 1, 9, 2, -1, 999, 999}, //int D->TL;
@@ -90,7 +90,7 @@ int tablaM[43][8]= {{1, 4, 1, 12, 3, -1, 999, 999}, //id D->PL';
                     //{5, 12, 5, 7, 8, 11, 999, 999}, //( I' -> Num
                     {5, 14, 5, -14, 999, 999, 999, 999}, //cte lit I'->cte lit
      /* -> */       {5, 17, 5, -17, 8, 999, 999, 999}, //= I'->=K
-                    //{6, 5, 6, -5, 8, -6, 7, 999}, //[ A->[k]A'
+                    {6, 5, 6, -5, 8, 11, 999, 999}, //[ A->[ KE
      /* 20 */       {7, 1, 7, 999, 999, 999, 999, 999},//; A'->e
                     {7, 2, 7, 999, 999, 999, 999, 999},//, A'->e
                     {7, 5, 7, -5, 8, -6, 7, 999}, //[ A' -> [K]A'
@@ -274,6 +274,9 @@ void vanalisislexico()
                 else
                     if(strchr(par,cCarent))
                         edoAct = 2;
+                    else
+                        if(cCarent == '.')
+                            edoAct = 37;
                     else
                         falla();
                 break;
@@ -585,26 +588,22 @@ void vanalisislexico()
             break;
         case 38: cCarent=nextchar();
             if(strchr(non,cCarent))
-                edoAct=1;
+                edoAct=38;
             else
                 if(strchr(par,cCarent))
-                    edoAct = 2;
-            else if(cCarent== '.')
-                    edoAct = 37;
+                    edoAct = 39;
                 else
-                    falla();
+                    edoAct=40;
             break;
 
         case 39: cCarent=nextchar();
             if(strchr(non,cCarent))
-                edoAct=1;
+                edoAct=38;
             else
                 if (strchr(par,cCarent))
-                    edoAct=2;
-                else if(cCarent== '.')
-                        edoAct = 37;
+                    edoAct=39;
                 else
-                    edoAct=3;
+                    edoAct=40;
             break;
         case 40: vretract();
             strcpy(asTokens[k++],"Real");
@@ -616,7 +615,6 @@ void vanalisislexico()
         }/*switch*/
     } /*while*/
 }
-
 void viniedos()
 {
     edoAct=0;
@@ -641,7 +639,7 @@ int edoActesacept()
     case 8: case 5: case 7: case 6: case 3:
     case 12: case 15: case 17: case 19: case 21:
     case 23 : case 26: case 28: case 30: case 32:
-    case 34: case 36:
+    case 34: case 36: case 40:
         return true;
         default : return false;
     }
@@ -881,7 +879,7 @@ int estoken(char x[])
 {
     int i;
 
-    for(i=0; i<22; i++)
+    for(i=0; i<23; i++)
     {
         if(strcmp(x, token[i]) == 0)
             return 1;
@@ -894,7 +892,7 @@ int buscaTabla(char a[], char x[])
 {
     int indx=0, inda=0, i;
 
-    for(i=0; i<22; i++)
+    for(i=0; i<23; i++)
         if(strcmp(a, token[i]) == 0)
             inda = i;//9 int
 
@@ -902,7 +900,7 @@ int buscaTabla(char a[], char x[])
         if(strcmp(x, varsint[i]) == 0)
             indx=i; //1 D
 
-    for(i=0; i<43; i++)
+    for(i=0; i<44; i++)
     {
         if(indx == tablaM[i][0])
             if(inda == tablaM[i][1])
