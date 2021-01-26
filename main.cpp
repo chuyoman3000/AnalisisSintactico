@@ -66,8 +66,8 @@ char token[17][8] = {"x", ";", ",", "*", "Id", "[", "]", "Num", "char", "int", "
 char varsint[15][3]={"x", "D", "L", "L'", "I", "I'", "A", "A'", "K",
     "T", "F", "E", "P"};
                                                    // e -> cadena vacia
-int tablaM[35][8]= {{1, 4, 1, 12, 3, -1, 999, 999}, //char D->PL';
-                    {1, 7, 1, 5, 3, -1, 999, 999}, //char D->I'L';
+int tablaM[35][8]= {{1, 4, 1, 12, 3, -1, 999, 999}, //id D->PL';
+                    {1, 7, 1, 5, 3, -1, 999, 999}, //num D->I'L';
                     {1, 8, 1, 9, 2, -1, 999, 999}, //char D->TL;
                     {1, 9, 1, 9, 2, -1, 999, 999}, //int D->TL;
                     {1, 10, 1, 9, 2, -1, 999, 999}, //float D->TL;
@@ -149,6 +149,7 @@ int main(void)
         cin.get();
         printf("Presiona (sS) para continuar ? : " );
         cin>>resp;
+        cin.get();
     }while (strchr("Ss",resp));
 
     return 0;
