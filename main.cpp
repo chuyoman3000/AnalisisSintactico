@@ -66,14 +66,17 @@ char token[17][8] = {"x", ";", ",", "*", "Id", "[", "]", "Num", "char", "int", "
 char varsint[15][3]={"x", "D", "L", "L'", "I", "I'", "A", "A'", "K",
     "T", "F", "E", "P"};
                                                    // e -> cadena vacia
-int tablaM[29][8]= {{1, 8, 1, 9, 2, -1, 999, 999}, //char D->TL:
-                    {1, 9, 1, 9, 2, -1, 999, 999}, //int D->TL:
-                    {1, 10, 1, 9, 2, -1, 999, 999}, //float D->TL:
+int tablaM[35][8]= {{1, 4, 1, 12, 3, -1, 999, 999}, //char D->PL';
+                    {1, 7, 1, 5, 3, -1, 999, 999}, //char D->I'L';
+                    {1, 8, 1, 9, 2, -1, 999, 999}, //char D->TL;
+                    {1, 9, 1, 9, 2, -1, 999, 999}, //int D->TL;
+                    {1, 10, 1, 9, 2, -1, 999, 999}, //float D->TL;
                     {2, 3, 2, 4, 3, 999, 999, 999}, // * L->IL'
                     {2, 4, 2, 4, 3, 999, 999, 999}, //Id L->IL'
          /* 5 */    {3, 1, 3, 5, 999, 999, 999, 999}, //; L'->I'
                     {3, 1, 3, 999, 999, 999, 999, 999},//; L'->e
                     {3, 2, 3, -2, 4, 3, 999, 999}, //, L'->,IL'
+                    {3, 3, 3, -3, 5, 3, 999, 999}, //* L'->*I'L'
                     {3, 14, 3, -14, 5, 999, 999, 999},// cte. Lit. L'->cte Lit. I'
                     {4, 3, 4, -3, -4, 5, 999, 999}, // * I->*Id I'
         /* 10 */    {4, 4, 4, -4, 5, 999, 999, 999},// Id I->Id I'
@@ -173,7 +176,7 @@ void generararch()
         exit(-1);
     }
     //puts("teclea el archivo (<ESC> para terminar el archivo): ");
-    printf("teclea el archivo (<ESC> para terminar el archivo): \n");
+    printf("teclea el archivo (<@> para terminar el archivo): \n");
     //cin.get();  //eliminar el enter
     //printf("Tecela <ESC> para terminar el archivo \n");
     //LA INFO ESTA EN EL BUFFER
@@ -828,13 +831,13 @@ int buscaTabla(char a[], char x[])
 
     for(i=0; i<18; i++)
         if(strcmp(a, token[i]) == 0)
-            inda = i;
+            inda = i;//9 int
 
     for(i=0; i<15; i++)
         if(strcmp(x, varsint[i]) == 0)
-            indx=i;
+            indx=i; //1 D
 
-    for(i=0; i<29; i++)
+    for(i=0; i<35; i++)
     {
         if(indx == tablaM[i][0])
             if(inda == tablaM[i][1])
