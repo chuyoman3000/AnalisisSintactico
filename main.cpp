@@ -60,14 +60,14 @@ int estoken(char x[]);
 bool finarch = false;
 FILE *Fd;
 
-char token[17][8] = {"x", ";", ",", "*", "Id", "[", "]", "Num", "char", "int", "float",
-    "puts", "(", ")", "Cte.Lit", "{", "}"};//, "="};
+char token[18][8] = {"x", ";", ",", "*", "Id", "[", "]", "Num", "char", "int", "float",
+    "puts", "(", ")", "Cte.Lit", "{", "}", "="};
 
 char varsint[15][3]={"x", "D", "L", "L'", "I", "I'", "A", "A'", "K",
     "T", "F", "E", "P"};
                                                    // e -> cadena vacia
-int tablaM[35][8]= {{1, 4, 1, 12, 3, -1, 999, 999}, //Id D->PL';
-                    {1, 7, 1, 5, 3, -1, 999, 999}, //Num D->I'L';
+int tablaM[36][8]= {{1, 4, 1, 12, 3, -1, 999, 999}, //id D->PL';
+                    {1, 7, 1, 5, 3, -1, 999, 999}, //num D->I'L';
                     {1, 8, 1, 9, 2, -1, 999, 999}, //char D->TL;
                     {1, 9, 1, 9, 2, -1, 999, 999}, //int D->TL;
                     {1, 10, 1, 9, 2, -1, 999, 999}, //float D->TL;
@@ -86,6 +86,7 @@ int tablaM[35][8]= {{1, 4, 1, 12, 3, -1, 999, 999}, //Id D->PL';
                     {5, 7, 5, -7, 999, 999, 999, 999}, //Num I' -> Num
                     {5, 12, 5, 7, 8, 11, 999, 999}, //( I' -> Num
         /* 15 */    {5, 14, 5, -14, 999, 999, 999, 999}, //cte lit I'->cte lit
+                    {5, 17, 5, -17, 8, 999, 999, 999}, //= I'->=K
                     {6, 5, 6, -5, 8, -6, 7, 999}, //[ A->[k]A'
                     {7, 1, 7, 999, 999, 999, 999, 999},//; A'->e
                     {7, 2, 7, 999, 999, 999, 999, 999},//, A'->e
@@ -149,6 +150,7 @@ int main(void)
         cin.get();
         printf("Presiona (sS) para continuar ? : " );
         cin>>resp;
+        cin.get();
     }while (strchr("Ss",resp));
 
     return 0;
@@ -510,7 +512,7 @@ void vanalisislexico()
                 viniedos();
                 break;
 
-            /*case 31: cCarent = nextchar();
+            case 31: cCarent = nextchar();
                 if(cCarent == '{')
                     edoAct = 32;
                 else
@@ -550,7 +552,7 @@ void vanalisislexico()
                     return;
                 iniToken = indice;
                 viniedos();
-                break;*/
+                break;
         }/*switch*/
     } /*while*/
 }
@@ -578,8 +580,8 @@ int edoActesacept()
     switch (edoAct){
     case 8: case 5: case 7: case 6: case 3:
     case 12: case 15: case 17: case 19: case 21:
-    case 23 : case 26: case 28: case 30: //case 32:
-    //case 34: case 36:
+    case 23 : case 26: case 28: case 30: case 32:
+    case 34: case 36:
         return true;
         default : return false;
     }
@@ -639,7 +641,7 @@ void falla()
             fseek(Fd, (long)iniToken, SEEK_SET);
             break;
 
-        case 29: recuperaerror(); /*edoIni = 31;
+        case 29: edoIni = 31;
             indice = iniToken;
             fseek(Fd, (long)iniToken, SEEK_SET);
             break;
@@ -654,7 +656,7 @@ void falla()
             fseek(Fd, (long)iniToken, SEEK_SET);
             break;
 
-        case 35: recuperaerror();*/
+        case 35: recuperaerror();
     }
 
     edoAct=edoIni;
@@ -819,7 +821,7 @@ int estoken(char x[])
 {
     int i;
 
-    for(i=0; i<15; i++)
+    for(i=0; i<18; i++)
     {
         if(strcmp(x, token[i]) == 0)
             return 1;
@@ -832,7 +834,7 @@ int buscaTabla(char a[], char x[])
 {
     int indx=0, inda=0, i;
 
-    for(i=0; i<18; i++)
+    for(i=0; i<19; i++)
         if(strcmp(a, token[i]) == 0)
             inda = i;//9 int
 
@@ -840,7 +842,7 @@ int buscaTabla(char a[], char x[])
         if(strcmp(x, varsint[i]) == 0)
             indx=i; //1 D
 
-    for(i=0; i<35; i++)
+    for(i=0; i<36; i++)
     {
         if(indx == tablaM[i][0])
             if(inda == tablaM[i][1])
