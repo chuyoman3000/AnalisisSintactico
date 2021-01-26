@@ -284,6 +284,8 @@ void vanalisislexico()
                 else
                     if(strchr(par,cCarent))
                         edoAct = 2;
+                else if(cCarent== '.')
+                        edoAct = 37;
                     else
                         falla();
                 break;
@@ -294,6 +296,8 @@ void vanalisislexico()
                 else
                     if (strchr(par,cCarent))
                         edoAct=2;
+                    else if(cCarent== '.')
+                            edoAct = 37;
                     else
                         edoAct=3;
                 break;
@@ -352,6 +356,8 @@ void vanalisislexico()
                 else
                     if(strchr(non,cCarent))
                         edoAct=11;
+                    else if(cCarent== '.')
+                            edoAct = 37;
                     else
                         falla();
                 break;
@@ -362,6 +368,8 @@ void vanalisislexico()
                 else
                     if(strchr(non,cCarent))
                         edoAct=11;
+                    else if(cCarent== '.')
+                            edoAct = 37;
                     else
                         falla();
                 break;
@@ -372,6 +380,8 @@ void vanalisislexico()
                 else
                     if(strchr(par,cCarent))
                         edoAct=10;
+                    else if(cCarent== '.')
+                            edoAct = 37;
                     else
                         edoAct=12;
                 break;
@@ -563,6 +573,46 @@ void vanalisislexico()
                 iniToken = indice;
                 viniedos();
                 break;
+
+        case 37: cCarent=nextchar();
+            if (strchr(non,cCarent))
+                edoAct = 38;
+            else
+                if(strchr(par,cCarent))
+                    edoAct = 39;
+                else
+                    falla();
+            break;
+        case 38: cCarent=nextchar();
+            if(strchr(non,cCarent))
+                edoAct=1;
+            else
+                if(strchr(par,cCarent))
+                    edoAct = 2;
+            else if(cCarent== '.')
+                    edoAct = 37;
+                else
+                    falla();
+            break;
+
+        case 39: cCarent=nextchar();
+            if(strchr(non,cCarent))
+                edoAct=1;
+            else
+                if (strchr(par,cCarent))
+                    edoAct=2;
+                else if(cCarent== '.')
+                        edoAct = 37;
+                else
+                    edoAct=3;
+            break;
+        case 40: vretract();
+            strcpy(asTokens[k++],"Real");
+            if (indice >= numBytesArch)
+                return;
+            iniToken=indice;
+            viniedos();
+            break;
         }/*switch*/
     } /*while*/
 }
