@@ -17,7 +17,7 @@ using namespace std;
 //#define TRUE 1
 //#define FALSE 0
 
-#define MAXTOKEN 20
+#define MAXTOKEN 50
 #define NUMPALRES 4
 #define MAX 50
 
@@ -31,7 +31,7 @@ char sLexema[127];
 char sLinea[127];
 //char *non="13579", *par="24680";
 char non[6]="13579", par[6]="24680";
-char asTokens [MAXTOKEN][10];
+char asTokens [MAXTOKEN][100];
 int indice=0, edoAct, edoIni, iniToken=0, k, numBytesArch;
 
 int cima = -1;
@@ -66,7 +66,9 @@ char token[22][8] = {"x", ";", ",", "*", "Id", "[", "]", "Num", "char", "int", "
 char varsint[15][3]={"x", "D", "L", "L'", "I", "I'", "A", "A'", "K",
     "T", "F", "E", "P"};
                                                    // e -> cadena vacia
-int tablaM[45][8]= {{1, 4, 1, 12, 3, -1, 999, 999}, //id D->PL';
+int tablaM[50][8]= {//{1, 1, 1, 999, 999, 999, 999, 999}, //D ->D;
+                    //{1, 5, 1, 5, 11, 999, 999, 999}, //D ->D;
+                    {1, 4, 1, 12, 3, -1, 999, 999}, //id D->PL';
                     {1, 7, 1, 5, 3, -1, 999, 999}, //num D->I'L';
                     {1, 8, 1, 9, 2, -1, 999, 999}, //char D->TL;
                     {1, 9, 1, 9, 2, -1, 999, 999}, //int D->TL;
@@ -107,7 +109,7 @@ int tablaM[45][8]= {{1, 4, 1, 12, 3, -1, 999, 999}, //id D->PL';
                     /*segunda gramatica */
         /* 25 */    {10, 11, 10, -11, 11, -1, 999, 999},//puts F-> puts E;
                     {10, 16, 10, -16, 999, 999, 999, 999},//} F-> };
-                    {11, 6, 11, -6, 999, 999, 999, 999},//]E -> ]
+                    {11, 6, 11, -6, 5, 999, 999, 999},//]E -> ] D
                     {11, 12, 11, -12, 12, -13, 999, 999},//( E -> (P)
                     {11, 13, 11, -13, 999, 999, 999, 999},//)E -> )
                     {12, 14, 12, -14, 999, 999, 999, 999},//cte lit P->cte lit
@@ -901,7 +903,7 @@ int buscaTabla(char a[], char x[])
         if(strcmp(x, varsint[i]) == 0)
             indx=i; //1 D
 
-    for(i=0; i<44; i++)
+    for(i=0; i<51; i++)
     {
         if(indx == tablaM[i][0])
             if(inda == tablaM[i][1])
